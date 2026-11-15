@@ -8,15 +8,16 @@
     "provenance": [
       {
         "file": "SKILL.md",
-        "origin": "original",
-        "author": "domingo888",
+        "origin": "github",
+        "upstream_url": "https://github.com/Oldcircle/geo-sleuth",
+        "author": "Oldcircle",
         "license": "MIT",
-        "version": "0.1.0",
+        "version": "main",
         "imported_at": "2026-11-15",
-        "note": "由本地 geo-sleuth 图搜地点项目的方法论整理为 DFS 规约，非第三方 Skill"
+        "note": "基于 Oldcircle/geo-sleuth 的照片定位方法论整理为 DFS 规约。已改写：流程改为可验证的观察→候选→收敛→分级→结论；移除本地脚本调用细节；新增短地名检索、证据分级与 unlocatable 出口。原始脚本与运行时仍以 geo-sleuth 为准。"
       }
     ],
-    "note": "单个 Skill 规约转化为一个独立制品"
+    "note": "单个 Skill 规约转化为一个独立制品；上游方法论来自 geo-sleuth（MIT）"
   },
   "model": {
     "provider": "openai-compatible",
