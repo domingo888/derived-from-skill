@@ -1,0 +1,17 @@
+# 运行证据（每次运行都会新增，不入库）
+runs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 本地环境
+.env
+*.local.json
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
