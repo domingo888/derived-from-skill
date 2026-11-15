@@ -1,0 +1,30 @@
+{
+  "plan_version": 1,
+  "capsule": "dfs-hello",
+  "compiled_by": {
+    "provider": "mock",
+    "model": "mock-replay",
+    "mode": "offline-fixture"
+  },
+  "notes": "最小示例计划：两步（生成 + 校验），仅用于验证运行链路，不含真实模型调用。",
+  "source_digest": "sha256:93c91dbe1c147821dba2fe98a1b95091b89360ca142b8c018814bc98e95e11fc",
+  "steps": [
+    {
+      "id": "greet",
+      "kind": "llm",
+      "prompt": "请用中文写一句礼貌问候，必须原样包含这个名字：{{input.name}}。只输出这一句话，不要引号，不要解释。",
+      "output": "draft",
+      "mock_output": "你好，{{input.name}}，很高兴见到你。"
+    },
+    {
+      "id": "guard",
+      "kind": "check",
+      "op": "contains",
+      "ref": "draft",
+      "value": "{{input.name}}"
+    }
+  ],
+  "output": {
+    "greeting": "{{draft}}"
+  }
+}

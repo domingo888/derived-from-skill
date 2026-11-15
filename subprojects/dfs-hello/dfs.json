@@ -1,0 +1,65 @@
+{
+  "name": "dfs-hello",
+  "title": "Hello DFS：最小 DFS 制品示例",
+  "version": "0.1.0",
+  "source": {
+    "kind": "skill",
+    "skills": ["SKILL.md"],
+    "provenance": [
+      {
+        "file": "SKILL.md",
+        "origin": "original",
+        "author": "domingo888",
+        "license": "MIT",
+        "version": "0.1.0",
+        "imported_at": "2026-11-15",
+        "note": "本项目自写的示例规约，非第三方 Skill"
+      }
+    ],
+    "note": "单个 Skill 规约转化为一个独立制品"
+  },
+  "model": {
+    "provider": "mock",
+    "model": "mock-replay",
+    "auth": "none",
+    "temperature": 0.2,
+    "max_tokens": 256,
+    "note": "示例默认走离线回放；换成 openai-compatible 即可绑真实模型，本地端点可保持 auth=none 与空 Key"
+  },
+  "runtime": {
+    "max_steps": 4,
+    "timeout_s": 60
+  },
+  "tools": [],
+  "ui": {
+    "kind": "web",
+    "title": "Hello DFS",
+    "host": "127.0.0.1",
+    "port": 8787,
+    "note": "单输入框 + 运行按钮；窗口方式可用 python dfs.py window 启动"
+  },
+  "io": {
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "title": "被问候的人名",
+          "description": "1–40 个字符，会原样出现在问候语里"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["greeting"],
+      "properties": {
+        "greeting": { "type": "string", "minLength": 1, "maxLength": 200, "title": "问候语" }
+      }
+    }
+  }
+}

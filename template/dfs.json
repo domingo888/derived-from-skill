@@ -1,0 +1,58 @@
+{
+  "name": "__CAPSULE__",
+  "title": "__TITLE__",
+  "version": "0.1.0",
+  "source": {
+    "kind": "skill",
+    "skills": ["SKILL.md"],
+    "provenance": [
+      {
+        "file": "SKILL.md",
+        "origin": "original",
+        "author": "__AUTHOR__",
+        "license": "MIT",
+        "version": "0.1.0",
+        "imported_at": "__TODAY__",
+        "note": "必须声明来源：original（自写） / github / clawhub / local-import / other（须填 upstream_url）"
+      }
+    ]
+  },
+  "model": {
+    "provider": "mock",
+    "model": "mock-replay",
+    "auth": "none",
+    "temperature": 0.2,
+    "max_tokens": 1024
+  },
+  "runtime": {
+    "max_steps": 12,
+    "timeout_s": 120
+  },
+  "tools": [],
+  "ui": {
+    "kind": "__UI_KIND__",
+    "title": "__TITLE__",
+    "host": "127.0.0.1",
+    "port": 8787,
+    "width": 760,
+    "height": 620
+  },
+  "io": {
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field_a"],
+      "properties": {
+        "field_a": { "type": "string", "minLength": 1, "maxLength": 40, "title": "示例字段" }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["result_a"],
+      "properties": {
+        "result_a": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
