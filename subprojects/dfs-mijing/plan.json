@@ -1,0 +1,73 @@
+{
+  "plan_version": 1,
+  "capsule": "dfs-mijing",
+  "compiled_by": {
+    "provider": "openai-compatible",
+    "model": "",
+    "mode": "model"
+  },
+  "notes": "照片地点推断草案计划：观察 → 候选 → 收敛 → 等级 → 地名 → 证据 → 状态。只覆盖模型推理部分；EXIF、识图、地名检索、卫星核验等脚本取证在外部流程执行，本制品不产坐标。",
+  "steps": [
+    {
+      "id": "observe",
+      "kind": "llm",
+      "system": "你是照片定位分析员，只描述画面里真正看到的东西，不下结论。",
+      "prompt": "观察这张照片，提取可用于定位的可见特征：建筑形态与材质、牌匾或招牌原文、道路走向、水系、植被、地形、车辆类型。每条写清“看到了什么”。\n照片：{{input.photo}}\n补充线索（可信度未知）：{{input.hint}}",
+      "output": "features"
+    },
+    {
+      "id": "candidates",
+      "kind": "llm",
+      "system": "你是照片定位分析员。",
+      "prompt": "基于以下画面特征，给出 1–4 个候选地点，按可能性排序。能识别到街区级就写街区全名，不要只写城市，不要叠加国家与省份。每个候选一行：地点｜依据。不要给坐标或置信度。\n特征：{{features}}",
+      "output": "candidate_list"
+    },
+    {
+      "id": "guard_candidates",
+      "kind": "check",
+      "op": "nonempty",
+      "ref": "candidate_list"
+    },
+    {
+      "id": "shortlist",
+      "kind": "llm",
+      "system": "你是照片定位分析员，只保留有画面依据的候选。",
+      "prompt": "逐个审查下列候选：画面特征是否真的支撑它？支撑不足的直接删除。输出剩余候选，每个一行：地点｜依据，最多 3 个。\n候选：{{candidate_list}}\n画面特征：{{features}}",
+      "output": "shortlist_text"
+    },
+    {
+      "id": "level",
+      "kind": "llm",
+      "system": "你是证据评估员。",
+      "prompt": "基于画面特征与候选清单判断证据等级：至少两类独立依据为 medium；强特征且有文字互证为 high；仅有单一模糊依据为 low。只输出 high、medium 或 low 中的一个词。\n特征：{{features}}\n候选：{{shortlist_text}}",
+      "output": "level_word"
+    },
+    {
+      "id": "place",
+      "kind": "llm",
+      "system": "你是照片定位分析员，只能使用已给出的候选。",
+      "prompt": "从下列候选里选一个最可能的地点，格式为「地点 行政区」。若没有任何候选得到画面支撑，输出空字符串。不要新增候选之外的地点。\n候选：{{shortlist_text}}",
+      "output": "place_name"
+    },
+    {
+      "id": "evidence",
+      "kind": "llm",
+      "system": "你是报告撰写员，只能使用已给出的证据。",
+      "prompt": "写出 2–4 条支撑结论的证据，每行一条，必须写明画面里看到了什么，不得编造街景比对、地图核实或坐标。\n候选：{{shortlist_text}}\n特征：{{features}}",
+      "output": "evidence_text"
+    },
+    {
+      "id": "status",
+      "kind": "llm",
+      "system": "你是状态判定员。",
+      "prompt": "给定结论与证据，只输出一个词：有明确地点与至少一条证据时输出 ok；地点为空或证据不足以支撑任何候选时输出 unlocatable。\n地点：{{place_name}}\n证据：{{evidence_text}}",
+      "output": "status_word"
+    }
+  ],
+  "output": {
+    "place": "{{place_name}}",
+    "confidence": "{{level_word}}",
+    "evidence": "{{evidence_text}}",
+    "status": "{{status_word}}"
+  }
+}

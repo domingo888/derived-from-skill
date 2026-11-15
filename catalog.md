@@ -13,6 +13,7 @@
 | 制品 | 源规约 / 来源 | 模型绑定 | UI | 步骤 | 状态 |
 | --- | --- | --- | --- | --- | --- |
 | [`dfs-hello`](subprojects/dfs-hello/) | `SKILL.md`（单个 Skill，origin=original） | `mock-replay`（离线示例，auth=none） | `web`（端口 8787，可用 window 启动） | 2（生成 + 校验） | 可运行 |
+| [`dfs-mijing`](subprojects/dfs-mijing/) | `SKILL.md`（单个 Skill，origin=original） | 未预设（`openai-compatible`，`model` 为空，需 `dfs model` 绑定；`auth=none` 允许空 Key） | `web`（端口 8787，可用 window 启动） | 8（观察 + 候选 + 收敛 + 等级 + 地名 + 证据 + 状态） | 草稿 |
 
 ## 登记格式
 

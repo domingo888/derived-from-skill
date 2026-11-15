@@ -1,0 +1,91 @@
+{
+  "name": "dfs-mijing",
+  "title": "觅境 · 照片地点推断",
+  "version": "0.1.0",
+  "source": {
+    "kind": "skill",
+    "skills": ["SKILL.md"],
+    "provenance": [
+      {
+        "file": "SKILL.md",
+        "origin": "original",
+        "author": "domingo888",
+        "license": "MIT",
+        "version": "0.1.0",
+        "imported_at": "2026-11-15",
+        "note": "由本地 geo-sleuth 图搜地点项目的方法论整理为 DFS 规约，非第三方 Skill"
+      }
+    ],
+    "note": "单个 Skill 规约转化为一个独立制品"
+  },
+  "model": {
+    "provider": "openai-compatible",
+    "model": "",
+    "auth": "none",
+    "temperature": 0.2,
+    "max_tokens": 2048,
+    "note": "未预设模型与端点：请先执行 dfs model 指定 --base-url 与 --model 后再 build。auth=none 允许空 API Key，适配 Ollama / LM Studio / LocalAI 等本地无鉴权端点"
+  },
+  "runtime": {
+    "max_steps": 8,
+    "timeout_s": 180
+  },
+  "tools": [],
+  "ui": {
+    "kind": "web",
+    "title": "觅境 · 照片地点推断",
+    "host": "127.0.0.1",
+    "port": 8787,
+    "note": "表单由 io.input_schema 自动生成；也可用 python dfs.py window 以独立窗口启动"
+  },
+  "io": {
+    "input_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["photo"],
+      "properties": {
+        "photo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20000000,
+          "title": "照片",
+          "description": "图片的 base64 data URL 或可访问的图片地址"
+        },
+        "hint": {
+          "type": "string",
+          "maxLength": 200,
+          "title": "补充线索",
+          "description": "可选，可信度未知，会与画面交叉验证"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["place", "confidence", "evidence", "status"],
+      "properties": {
+        "place": {
+          "type": "string",
+          "maxLength": 120,
+          "title": "地点",
+          "description": "形如「地点 行政区」；无法定位时为空字符串"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "title": "证据等级"
+        },
+        "evidence": {
+          "type": "string",
+          "title": "证据",
+          "description": "逐条证据，每行一条，写明画面里看到了什么"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["ok", "missing_model", "unlocatable"],
+          "title": "状态"
+        }
+      }
+    }
+  }
+}
