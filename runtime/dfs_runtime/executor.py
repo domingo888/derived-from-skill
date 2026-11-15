@@ -1,7 +1,7 @@
 """运行层：按 plan 确定性执行，并落盘证据。
 
 运行期不做任何「重新规划」：流程结构由 plan 固化，
-模型只在 llm 步骤内做节点推理。
+模型只在 llm 步骤内部做节点推理。
 """
 
 from __future__ import annotations

@@ -117,7 +117,7 @@ def build_plan(capsule: Capsule, adapter: BaseAdapter) -> dict:
     plan = _extract_json(raw)
 
     if "error" in plan and "steps" not in plan:
-        raise ContractError(f"编译器拒绕编译: {plan['error']}")
+        raise ContractError(f"编译器拒绝编译: {plan['error']}")
 
     plan.setdefault("source_digest", capsule.source_digest)
     described = adapter.describe()
