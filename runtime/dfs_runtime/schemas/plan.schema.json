@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://derived-from-skill/schemas/plan.schema.json",
+  "title": "DFS Run Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["plan_version", "capsule", "steps", "output"],
+  "properties": {
+    "plan_version": { "type": "integer", "const": 1 },
+    "capsule": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "compiled_by": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "mode": { "type": "string", "enum": ["model", "offline-fixture"] }
+      }
+    },
+    "source_digest": { "type": "string" },
+    "notes": { "type": "string" },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": { "$ref": "#/$defs/step" }
+    },
+    "output": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "step": {
+      "type": "object",
+      "oneOf": [
+        { "$ref": "#/$defs/llmStep" },
+        { "$ref": "#/$defs/checkStep" },
+        { "$ref": "#/$defs/toolStep" }
+      ]
+    },
+    "llmStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "prompt", "output"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "maxLength": 48 },
+        "kind": { "type": "string", "const": "llm" },
+        "prompt": { "type": "string", "minLength": 1 },
+        "output": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "maxLength": 48 },
+        "system": { "type": "string" },
+        "mock_output": {},
+        "note": { "type": "string" }
+      }
+    },
+    "checkStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "op", "ref"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "maxLength": 48 },
+        "kind": { "type": "string", "const": "check" },
+        "op": { "type": "string", "enum": ["nonempty", "contains", "regex", "keys", "equals", "len_max"] },
+        "ref": { "type": "string", "minLength": 1 },
+        "value": {},
+        "note": { "type": "string" }
+      }
+    },
+    "toolStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "tool", "args", "output"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "maxLength": 48 },
+        "kind": { "type": "string", "const": "tool" },
+        "tool": { "type": "string", "minLength": 1 },
+        "args": { "type": "object" },
+        "output": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "maxLength": 48 },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}
