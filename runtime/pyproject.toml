@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dfs-runtime"
+version = "0.1.0"
+description = "DFS（Derived From Skill）最小运行时：把 Skill 规约编译成独立可运行制品"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+dfs = "dfs_runtime.cli:main"
+
+[tool.setuptools]
+packages = ["dfs_runtime"]
+
+[tool.setuptools.package-data]
+dfs_runtime = ["schemas/*.json"]
