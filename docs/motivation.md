@@ -47,7 +47,7 @@ $$C_{total} = C_s + E[r] \cdot C_r$$
 
 挂载关系构成一个串联系统，其整体确定性由最不确定的环节决定：
 
-$$D_{system} = \min(D_{agent}, D_{skill}) = D_{agent}$
+$$D_{system} = \min(D_{agent}, D_{skill}) = D_{agent}$$
 
 也就是说，**只要 Agent 的调度自由度还在链路中，Skill 的确定性就无法传导到结果**。加大 Skill 规约的严格程度、优化 Skill 描述文案，都只能改善 $D_{skill}$，而 $D_{agent}$ 不变，因此系统确定性不变。
 
